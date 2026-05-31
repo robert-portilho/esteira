@@ -6,8 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    # REPLACE with your actual GitHub repository URL
-    repoURL: https://github.com/YOUR_GITHUB_USERNAME/argo-node-test.git
+    repoURL: https://github.com/robert-portilho/esteira.git
     targetRevision: HEAD
     path: k8s # The folder containing your deployment.yaml and service.yaml
   destination:
