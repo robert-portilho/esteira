@@ -17,9 +17,7 @@ spec:
     spec:
       containers:
       - name: node-hello-world
-        # REPLACE 'YOUR_DOCKERHUB_USERNAME' with your actual username (e.g. janesmith/node-hello-world:latest)
-        # Or change this if you are using a local image registry
-        image: YOUR_DOCKERHUB_USERNAME/node-hello-world:latest
+        image: robb3rt94/node-hello-world:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
