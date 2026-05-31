@@ -5,11 +5,10 @@ metadata:
   labels:
     app: node-hello-world
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 3000
     targetPort: 3000
-    nodePort: 30080 # Exposes the service on localhost:30080 (assuming Docker Desktop, Minikube, or Kind exposes NodePorts on cluster nodes)
     protocol: TCP
   selector:
     app: node-hello-world
