@@ -1,0 +1,32 @@
+apiVersion:apps/v1
+kind: Deployment
+metadata:
+  name: node-hello-world
+  namespace: default
+  labels:
+    app: node-hello-world
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: node-hello-world
+  template:
+    metadata:
+      labels:
+        app: node-hello-world
+    spec:
+      containers:
+      - name: node-hello-world
+        # REPLACE 'YOUR_DOCKERHUB_USERNAME' with your actual username (e.g. janesmith/node-hello-world:latest)
+        # Or change this if you are using a local image registry
+        image: YOUR_DOCKERHUB_USERNAME/node-hello-world:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"

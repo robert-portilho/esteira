@@ -1,0 +1,11 @@
+{
+  "name": "node-hello-world",
+  "version": "1.0.0",
+  "description": "Simple Hello World app for Argo CD demonstration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

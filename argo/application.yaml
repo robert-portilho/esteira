@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-hello-world-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # REPLACE with your actual GitHub repository URL
+    repoURL: https://github.com/YOUR_GITHUB_USERNAME/argo-node-test.git
+    targetRevision: HEAD
+    path: k8s # The folder containing your deployment.yaml and service.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true      # Automatically delete resources that are removed from git
+      selfHeal: true   # Automatically revert manual changes made to the cluster
+    syncOptions:
+    - CreateNamespace=true
