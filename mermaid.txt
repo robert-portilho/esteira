@@ -1,0 +1,112 @@
+flowchart LR
+
+    %% =========================
+    %% NAMESPACES
+    %% =========================
+
+    subgraph K8S["☸️ Kubernetes Cluster"]
+        direction TB
+
+        subgraph NSA["Namespace: pagamentos"]
+            APPA["🚀 Aplicações"]
+            COLA["📦 OTel Collector<br/>Namespace"]
+            APPA --> COLA
+        end
+
+        subgraph NSB["Namespace: pedidos"]
+            APPB["🚀 Aplicações"]
+            COLB["📦 OTel Collector<br/>Namespace"]
+            APPB --> COLB
+        end
+
+        subgraph NSC["Namespace: clientes"]
+            APPC["🚀 Aplicações"]
+            COLC["📦 OTel Collector<br/>Namespace"]
+            APPC --> COLC
+        end
+    end
+
+    %% =========================
+    %% KAFKA
+    %% =========================
+
+    subgraph BUSINESS["💼 Fluxo de Logs de Negócio"]
+        KAFKA["🟠 Kafka Cluster"]
+
+        TOPIC1["Topic: pagamentos"]
+        TOPIC2["Topic: pedidos"]
+        TOPIC3["Topic: clientes"]
+
+        KAFKA --- TOPIC1
+        KAFKA --- TOPIC2
+        KAFKA --- TOPIC3
+    end
+
+    %% =========================
+    %% OBSERVABILITY PIPELINE
+    %% =========================
+
+    subgraph OBS["🔍 Pipeline de Observabilidade"]
+
+        DS["⚙️ OTel Collector<br/>DaemonSet"]
+
+        GW["🌐 OTel Collector<br/>Gateway"]
+
+        DS --> GW
+    end
+
+    %% =========================
+    %% BACKENDS
+    %% =========================
+
+    subgraph BACKENDS["📊 Backends"]
+
+        METRICS["📈 Metrics<br/>Prometheus / Mimir"]
+
+        TRACES["🔗 Traces<br/>Tempo / Jaeger"]
+
+        LOGS["📄 Logs Técnicos<br/>Loki / Elastic"]
+
+    end
+
+    %% =========================
+    %% FLUXO PRINCIPAL
+    %% =========================
+
+    COLA -->|"Metrics<br/>Traces<br/>Logs Técnicos"| DS
+    COLB -->|"Metrics<br/>Traces<br/>Logs Técnicos"| DS
+    COLC -->|"Metrics<br/>Traces<br/>Logs Técnicos"| DS
+
+    %% =========================
+    %% FLUXO NEGÓCIO
+    %% =========================
+
+    COLA -.->|"Logs Negócio"| TOPIC1
+    COLB -.->|"Logs Negócio"| TOPIC2
+    COLC -.->|"Logs Negócio"| TOPIC3
+
+    %% =========================
+    %% EXPORTAÇÃO FINAL
+    %% =========================
+
+    GW --> METRICS
+    GW --> TRACES
+    GW --> LOGS
+
+    %% =========================
+    %% ESTILOS
+    %% =========================
+
+    classDef app fill:#E8F5E9,stroke:#2E7D32,color:#000,stroke-width:2px;
+    classDef collector fill:#E3F2FD,stroke:#1565C0,color:#000,stroke-width:2px;
+    classDef daemon fill:#D1C4E9,stroke:#5E35B1,color:#000,stroke-width:3px;
+    classDef gateway fill:#BBDEFB,stroke:#0D47A1,color:#000,stroke-width:3px;
+    classDef kafka fill:#FFF3E0,stroke:#EF6C00,color:#000,stroke-width:3px;
+    classDef backend fill:#ECEFF1,stroke:#455A64,color:#000,stroke-width:2px;
+
+    class APPA,APPB,APPC app;
+    class COLA,COLB,COLC collector;
+    class DS daemon;
+    class GW gateway;
+    class KAFKA,TOPIC1,TOPIC2,TOPIC3 kafka;
+    class METRICS,TRACES,LOGS backend;
